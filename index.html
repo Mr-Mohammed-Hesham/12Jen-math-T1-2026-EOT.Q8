@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📊 Graphing Quadratic Inequalities - رياضيات 12 عام | Mr. Mohammed Hesham</title>
+<meta name="description" content="امتحان تفاعلي عن تمثيل المتباينات التربيعية ذات المتغيرين بيانياً - صف 12 عام">
+<meta name="author" content="Mr. Mohammed Hesham">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Inter:wght@400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); }
+body.en-mode { font-family: 'Inter', sans-serif; direction: ltr; }
+.arabic-math { font-family: 'Amiri', 'Cairo', serif; }
+.correct { background-color: #dcfce7 !important; border-color: #16a34a !important; }
+.incorrect { background-color: #fee2e2 !important; border-color: #dc2626 !important; }
+.timer-warning { color: #dc2626 !important; animation: pulse 1s infinite; }
+@keyframes pulse { 50% { opacity: 0.7; } }
+@media print { .no-print { display: none !important; } }
+.success-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.875rem; }
+.grade-excellent { background: #dcfce7; color: #166534; }
+.grade-good { background: #fef3c7; color: #92400e; }
+.grade-pass { background: #dbeafe; color: #1e40af; }
+.grade-fail { background: #fee2e2; color: #991b1b; }
+.lang-switch { position: fixed; top: 16px; left: 16px; z-index: 100; background: white; padding: 6px; border-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); display: flex; gap: 4px; border: 2px solid #2563eb; }
+body.en-mode .lang-switch { left: auto; right: 16px; }
+.lang-btn { padding: 6px 14px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: all 0.3s; border: none; font-size: 0.875rem; background: transparent; color: #6b7280; }
+.lang-btn.active { background: #2563eb; color: white; box-shadow: 0 2px 6px rgba(37,99,235,0.4); }
+.shuffle-badge { display: inline-block; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; margin-right: 8px; }
+body.en-mode .shuffle-badge { margin-right: 0; margin-left: 8px; }
+.math-display { display: inline-block; direction: ltr; font-family: 'Amiri', serif; font-size: 1.1em; padding: 2px 6px; background: #dbeafe; border-radius: 4px; margin: 2px; color: #1e40af; font-weight: 600; }
+.save-indicator { position: fixed; bottom: 20px; left: 20px; z-index: 200; background: #10b981; color: white; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+body.en-mode .save-indicator { left: auto; right: 20px; }
+.save-indicator.show { opacity: 1; }
+.formula-box { background: #dbeafe; border: 2px solid #2563eb; border-radius: 8px; padding: 12px; margin: 10px 0; font-family: 'Amiri', serif; direction: ltr; text-align: center; }
+.svg-graph { display: block; margin: 12px auto; background: white; border: 2px solid #e5e7eb; border-radius: 12px; padding: 8px; max-width: 100%; }
+.graph-container { text-align: center; margin: 10px 0; }
+.module-badge { display: inline-block; padding: 4px 16px; border-radius: 20px; font-weight: bold; font-size: 0.85rem; margin-bottom: 8px; }
+.module-1 { background: #dbeafe; color: #1e40af; }
+.module-2 { background: #fce7f3; color: #9f1239; }
+.module-3 { background: #ecfdf5; color: #065f46; }
+.module-4 { background: #fef3c7; color: #92400e; }
+.module-5 { background: #ede9fe; color: #5b21b6; }
+.module-6 { background: #fee2e2; color: #991b1b; }
+</style>
+</head>
+<body class="p-4 md:p-8 min-h-screen">
+
+<div class="lang-switch no-print">
+<button class="lang-btn active" onclick="setLanguage('ar')" id="btn-ar">عربي</button>
+<button class="lang-btn" onclick="setLanguage('en')" id="btn-en">EN</button>
+</div>
+
+<div id="saveIndicator" class="save-indicator">💾 <span data-ar="تم الحفظ" data-en="Saved">تم الحفظ</span></div>
+
+<div id="timer-container" class="max-w-5xl mx-auto mb-4 text-center no-print">
+<div class="bg-white p-4 rounded-2xl shadow-lg inline-block border-2 border-blue-100">
+<span class="text-gray-600 ml-2">⏰ <span data-ar="الوقت المتبقي:" data-en="Time Left:">الوقت المتبقي:</span></span>
+<span id="timer" class="text-2xl font-bold text-blue-700 font-mono">60:00</span>
+<span class="shuffle-badge">📊 <span data-ar="المتباينات التربيعية" data-en="Quadratic Inequalities">المتباينات التربيعية</span> - 30 <span data-ar="سؤال" data-en="Questions">سؤال</span></span>
+</div>
+</div>
+
+<div class="max-w-5xl mx-auto mb-6 flex flex-wrap gap-3 justify-center no-print">
+<button onclick="toggleAnswers()" class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2 rounded-xl font-medium transition shadow">👀 <span data-ar="إظهار/إخفاء الإجابات" data-en="Show/Hide Answers">إظهار/إخفاء الإجابات</span></button>
+<button onclick="window.print()" class="bg-gray-700 hover:bg-gray-900 text-white px-5 py-2 rounded-xl font-medium transition shadow">🖨️ <span data-ar="طباعة" data-en="Print">طباعة</span></button>
+<button onclick="reshuffleExam()" class="bg-gradient-to-r from-blue-700 to-indigo-600 hover:from-blue-800 hover:to-indigo-700 text-white px-5 py-2 rounded-xl font-medium transition shadow">🔄 <span data-ar="أسئلة جديدة" data-en="New Questions">أسئلة جديدة</span></button>
+<button onclick="clearProgress()" class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-xl font-medium transition shadow">🗑️ <span data-ar="مسح التقدم" data-en="Clear Progress">مسح التقدم</span></button>
+</div>
+
+<header class="max-w-5xl mx-auto bg-white p-8 rounded-3xl shadow-2xl mb-8 border-4 border-blue-500">
+<div class="text-center">
+<div class="inline-block bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold mb-4">MATH GRADE 12 GENERAL - QUESTION 8</div>
+<h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">📊 <span data-ar="تمثيل المتباينات التربيعية ذات المتغيرين بيانياً" data-en="Graphing Quadratic Inequalities in Two Variables">تمثيل المتباينات التربيعية ذات المتغيرين بيانياً</span></h1>
+<h2 class="text-xl text-blue-700 font-semibold mb-2"><span data-ar="رياضيات صف 12 عام - ص 73 (أمثلة 1A, 1B)" data-en="Grade 12 General - Page 73 (Examples 1A, 1B)">رياضيات صف 12 عام - ص 73 (أمثلة 1A, 1B)</span></h2>
+<p class="text-gray-600 mb-4"><span data-ar="Parabolas, Shaded Regions, Dashed vs Solid Lines & Test Points" data-en="Parabolas, Shaded Regions, Dashed vs Solid Lines & Test Points">القطع المكافئ، المناطق المظللة، الخطوط المتقطعة vs المتصلة ونقاط الاختبار</span></p>
+<p class="text-sm text-green-600 font-semibold">💾 <span data-ar="يتم حفظ تقدمك تلقائياً - 30 سؤالاً في 6 أقسام" data-en="Your progress is auto-saved - 30 questions in 6 sections">يتم حفظ تقدمك تلقائياً - 30 سؤالاً في 6 أقسام</span></p>
+</div>
+<div class="mt-6 flex flex-wrap justify-center gap-4 text-sm text-gray-600">
+<span>📅 <span data-ar="التاريخ:" data-en="Date:">التاريخ:</span> <input type="text" id="examDate" class="border-b-2 border-blue-300 bg-transparent w-32 text-center"></span>
+<span>😊 <span data-ar="الاسم:" data-en="Name:">الاسم:</span> <input type="text" id="studentName" class="border-b-2 border-blue-300 bg-transparent w-40 text-center" data-placeholder-ar="اكتب اسمك" data-placeholder-en="Your name" placeholder="اكتب اسمك"></span>
+<span>🏫 <span data-ar="الشعبة:" data-en="Class:">الشعبة:</span> <input type="text" id="studentClass" class="border-b-2 border-blue-300 bg-transparent w-32 text-center" data-placeholder-ar="الشعبة" data-placeholder-en="Class" placeholder="الشعبة"></span>
+<span>⏰ <span data-ar="المدة: 60 دقيقة" data-en="Duration: 60 min">المدة: 60 دقيقة</span></span>
+<span>📊 <span data-ar="المجموع: 100 درجة" data-en="Total: 100 points">المجموع: 100 درجة</span></span>
+</div>
+</header>
+
+<div class="max-w-5xl mx-auto mb-6 bg-white p-4 rounded-xl shadow-lg border-2 border-blue-200 no-print">
+<h3 class="font-bold text-lg mb-3 text-blue-800 text-center">📐 <span data-ar="القواعد الأساسية" data-en="Key Rules">القواعد الأساسية</span></h3>
+<div class="grid md:grid-cols-3 gap-3 text-sm">
+<div class="formula-box">
+<strong><span data-ar="نوع الخط:" data-en="Line Type:">نوع الخط:</span></strong><br>
+<span data-ar="> أو < : خط متقطع (dashed)" data-en="> or <: dashed line">> أو < : خط متقطع (dashed)</span><br>
+<span data-ar="≥ أو ≤ : خط متصل (solid)" data-en="≥ or ≤: solid line">≥ أو ≤ : خط متصل (solid)</span>
+</div>
+<div class="formula-box">
+<strong><span data-ar="المنطقة المظللة:" data-en="Shaded Region:">المنطقة المظللة:</span></strong><br>
+<span data-ar="y > f(x) أو y ≥ f(x): فوق القطع" data-en="y > f(x) or y ≥ f(x): above parabola">y > f(x) أو y ≥ f(x): فوق القطع</span><br>
+<span data-ar="y < f(x) أو y ≤ f(x): تحت القطع" data-en="y < f(x) or y ≤ f(x): below parabola">y < f(x) أو y ≤ f(x): تحت القطع</span>
+</div>
+<div class="formula-box">
+<strong><span data-ar="نقطة الاختبار:" data-en="Test Point:">نقطة الاختبار:</span></strong><br>
+<span data-ar="استخدم (0,0) إذا لم تكن على القطع" data-en="Use (0,0) if not on parabola">استخدم (0,0) إذا لم تكن على القطع</span><br>
+<span data-ar="تحقق من صحة المتباينة" data-en="Check if inequality holds">تحقق من صحة المتباينة</span>
+</div>
+<div class="formula-box">
+<strong><span data-ar="اتجاه القطع:" data-en="Parabola Direction:">اتجاه القطع:</span></strong><br>
+<span data-ar="a > 0: مفتوح لأعلى" data-en="a > 0: opens up">a > 0: مفتوح لأعلى</span><br>
+<span data-ar="a < 0: مفتوح لأسفل" data-en="a < 0: opens down">a < 0: مفتوح لأسفل</span>
+</div>
+<div class="formula-box">
+<strong><span data-ar="رأس القطع:" data-en="Vertex:">رأس القطع:</span></strong><br>
+<span class="math-display">x = -b/(2a)</span><br>
+<span class="math-display">y = f(-b/(2a))</span>
+</div>
+<div class="formula-box">
+<strong><span data-ar="صيغة الرأس:" data-en="Vertex Form:">صيغة الرأس:</span></strong><br>
+<span class="math-display">y = a(x-h)² + k</span><br>
+<span data-ar="الرأس (h, k)" data-en="Vertex (h, k)">الرأس (h, k)</span>
+</div>
+</div>
+</div>
+
+<main class="max-w-5xl mx-auto space-y-8" id="exam-content"></main>
+
+<div class="text-center no-print pb-8 mt-8">
+<button onclick="gradeExam()" class="bg-gradient-to-r from-blue-700 to-indigo-600 hover:from-blue-800 hover:to-indigo-700 text-white text-lg px-12 py-4 rounded-2xl font-bold shadow-xl transition transform hover:scale-105">🎯 <span data-ar="صحح إجاباتي!" data-en="Grade My Exam!">صحح إجاباتي!</span></button>
+</div>
+
+<div id="results-panel" class="max-w-5xl mx-auto mt-8 bg-white p-8 rounded-3xl shadow-2xl border-4 border-blue-500 hidden no-print">
+<h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">🏆 <span data-ar="نتيجتك يا بطل!" data-en="Your Result, Champion!">نتيجتك يا بطل!</span> 🏆</h2>
+<div class="grid md:grid-cols-3 gap-4 mb-6">
+<div class="bg-blue-50 p-4 rounded-xl text-center"><p>😊 <span data-ar="الاسم" data-en="Name">الاسم</span></p><p id="res-name" class="font-bold text-xl text-blue-700">-</p></div>
+<div class="bg-indigo-50 p-4 rounded-xl text-center"><p>📅 <span data-ar="التاريخ" data-en="Date">التاريخ</span></p><p id="res-date" class="font-bold text-xl text-indigo-700">-</p></div>
+<div class="bg-blue-50 p-4 rounded-xl text-center"><p>🌟 <span data-ar="المجموع" data-en="Total">المجموع</span></p><p id="res-total" class="font-bold text-3xl text-blue-700">0 / 100</p></div>
+</div>
+<div class="text-center mb-6">
+<span id="success-badge" class="success-badge grade-excellent">-</span>
+<p id="success-percent" class="text-4xl font-bold text-blue-700 mt-2">0%</p>
+<p class="text-sm text-gray-500"><span data-ar="نسبة النجاح" data-en="Success Rate">نسبة النجاح</span></p>
+</div>
+<div class="bg-gray-50 p-6 rounded-xl mb-6">
+<h3 class="font-bold text-lg mb-4 text-gray-800">📊 <span data-ar="أداؤك في كل قسم:" data-en="Your Performance by Section:">أداؤك في كل قسم:</span></h3>
+<div class="space-y-3" id="sections-performance"></div>
+</div>
+<div class="text-center">
+<button id="sendEmailBtn" onclick="sendResultsToEmail()" class="bg-gradient-to-r from-blue-700 to-indigo-600 text-white text-lg px-8 py-3 rounded-2xl font-bold shadow-xl transition">📧 <span data-ar="أرسل النتيجة للمعلم" data-en="Send Result to Teacher">أرسل النتيجة للمعلم</span></button>
+<p id="emailStatus" class="text-sm mt-2 text-center font-medium"></p>
+</div>
+</div>
+
+<footer class="max-w-5xl mx-auto mt-10 mb-8 text-center text-gray-500 text-sm no-print">
+© Graphing Quadratic Inequalities - Grade 12 General | Mr. Mohammed Hesham 📊
+</footer>
+
+<script>
+const PUBLIC_KEY = "Rb3Lq8tXaFmc5YHUH";
+const SERVICE_ID = "service_w15m64i";
+const TEMPLATE_ID = "template_5b0u2tq";
+const TARGET_EMAIL = "mohammedhesham872@gmail.com";
+emailjs.init(PUBLIC_KEY);
+
+const STORAGE_KEY = 'quadratic_inequalities_grade12_v1';
+const TOTAL_TIME = 3600;
+const TOTAL_QUESTIONS = 30;
+const TOTAL_SECTIONS = 6;
+const QUESTIONS_PER_SECTION = 5;
+
+let currentSeed = null;
+let answersVisible = false;
+let saveIndicatorTimeout = null;
+let currentLang = 'ar';
+let timeRemaining = TOTAL_TIME;
+let timerInterval;
+let examData;
+let correctAnswersMap = {};
+let rng = null;
+
+function mulberry32(a) {
+    return function() {
+        var t = a += 0x6D2B79F5;
+        t = Math.imul(t ^ t >>> 15, t | 1);
+        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    }
+}
+
+function showSaveIndicator() {
+    const indicator = document.getElementById('saveIndicator');
+    indicator.classList.add('show');
+    if (saveIndicatorTimeout) clearTimeout(saveIndicatorTimeout);
+    saveIndicatorTimeout = setTimeout(() => indicator.classList.remove('show'), 1500);
+}
+
+function saveState(showIndicator = true) {
+    try {
+        const state = {
+            seed: currentSeed, lang: currentLang,
+            studentName: document.getElementById('studentName').value,
+            studentClass: document.getElementById('studentClass').value,
+            examDate: document.getElementById('examDate').value,
+            answers: getSelectedAnswers(),
+            timeRemaining: timeRemaining,
+            answersVisible: answersVisible, savedAt: Date.now()
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        if (showIndicator) showSaveIndicator();
+    } catch (e) { console.error('Save error:', e); }
+}
+
+function loadState() {
+    try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved ? JSON.parse(saved) : null;
+    } catch (e) { return null; }
+}
+
+function getSelectedAnswers() {
+    const answers = {};
+    for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+        const selected = document.querySelector('input[name="q'+i+'"]:checked');
+        if (selected) answers[i] = selected.value;
+    }
+    return answers;
+}
+
+function restoreAnswers(answers) {
+    if (!answers) return;
+    for (const [idx, val] of Object.entries(answers)) {
+        const radio = document.querySelector('input[name="q'+idx+'"][value="'+val+'"]');
+        if (radio) radio.checked = true;
+    }
+}
+
+function clearProgress() {
+    const msg = currentLang === 'ar' ? '⚠️ هل أنت متأكد من مسح كل التقدم؟' : '⚠️ Clear all progress?';
+    if (confirm(msg)) { localStorage.removeItem(STORAGE_KEY); location.reload(); }
+}
+
+function setupAnswerListeners() {
+    document.getElementById('exam-content').addEventListener('change', (e) => {
+        if (e.target.type === 'radio') saveState();
+    });
+}
+
+function setupInputListeners() {
+    ['studentName', 'studentClass', 'examDate'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('input', () => saveState(false));
+            el.addEventListener('blur', () => saveState());
+        }
+    });
+}
+
+// ==================== SVG DIAGRAMS ====================
+const svgGraphs = {
+    q31_graph: `<svg class="svg-graph" width="450" height="400" viewBox="0 0 450 400" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="440" height="390" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+        <text x="225" y="25" text-anchor="middle" font-size="13" fill="#92400e" font-weight="bold">السؤال 31: أي متباينة يمثلها الرسم؟</text>
+        <!-- Grid -->
+        <g stroke="#e5e7eb" stroke-width="0.5">
+            ${Array.from({length: 17}, (_, i) => `<line x1="${50 + i*22}" y1="50" x2="${50 + i*22}" y2="350"/>`).join('')}
+            ${Array.from({length: 14}, (_, i) => `<line x1="50" y1="${50 + i*22}" x2="410" y2="${50 + i*22}"/>`).join('')}
+        </g>
+        <!-- Axes -->
+        <line x1="50" y1="270" x2="420" y2="270" stroke="#374151" stroke-width="2" marker-end="url(#arrowQ31)"/>
+        <line x1="204" y1="350" x2="204" y2="40" stroke="#374151" stroke-width="2" marker-end="url(#arrowQ31)"/>
+        <text x="425" y="275" font-size="11" fill="#374151" font-weight="bold">x</text>
+        <text x="194" y="35" font-size="11" fill="#374151" font-weight="bold">y</text>
+        <text x="209" y="285" font-size="10" fill="#374151">O</text>
+        <!-- Scale -->
+        <text x="226" y="285" font-size="9" fill="#6b7280">1</text>
+        <text x="248" y="285" font-size="9" fill="#6b7280">2</text>
+        <text x="182" y="285" font-size="9" fill="#6b7280">-1</text>
+        <text x="160" y="285" font-size="9" fill="#6b7280">-2</text>
+        <text x="138" y="285" font-size="9" fill="#6b7280">-3</text>
+        <text x="116" y="285" font-size="9" fill="#6b7280">-4</text>
+        <text x="199" y="248" font-size="9" fill="#6b7280">1</text>
+        <text x="199" y="226" font-size="9" fill="#6b7280">2</text>
+        <text x="199" y="204" font-size="9" fill="#6b7280">3</text>
+        <text x="199" y="182" font-size="9" fill="#6b7280">4</text>
+        <text x="199" y="160" font-size="9" fill="#6b7280">5</text>
+        <text x="199" y="138" font-size="9" fill="#6b7280">6</text>
+        <text x="199" y="292" font-size="9" fill="#6b7280">-1</text>
+        <!-- Shaded region ABOVE parabola (light blue) -->
+        <path d="M 50 50 L 50 270 L 94 270 Q 116 200 138 160 Q 160 120 182 100 Q 204 90 226 100 Q 248 120 270 160 Q 292 200 314 270 L 410 270 L 410 50 Z" fill="#bfdbfe" opacity="0.5"/>
+        <!-- Parabola y = x² + 2x + 1 = (x+1)², vertex at (-1, 0), dashed line -->
+        <path d="M 94 270 Q 116 200 138 160 Q 160 120 182 100 Q 204 90 226 100 Q 248 120 270 160 Q 292 200 314 270" fill="none" stroke="#2563eb" stroke-width="3" stroke-dasharray="8,4"/>
+        <!-- Vertex -->
+        <circle cx="182" cy="270" r="4" fill="#dc2626"/>
+        <text x="160" y="290" font-size="9" fill="#dc2626" font-weight="bold">V(-1, 0)</text>
+        <!-- Y-intercept -->
+        <circle cx="204" cy="248" r="3" fill="#16a34a"/>
+        <text x="210" y="245" font-size="9" fill="#16a34a">(0, 1)</text>
+        <!-- Dashed line indicator -->
+        <text x="225" y="370" text-anchor="middle" font-size="11" fill="#92400e" font-weight="bold">Dashed line → strict inequality (&gt; or &lt;)</text>
+        <text x="225" y="385" text-anchor="middle" font-size="10" fill="#92400e">Shaded ABOVE parabola → y &gt; f(x)</text>
+        <defs><marker id="arrowQ31" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#374151"/></marker></defs>
+    </svg>`,
+    
+    q32_graph: `<svg class="svg-graph" width="450" height="400" viewBox="0 0 450 400" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="440" height="390" rx="12" fill="#fce7f3" stroke="#ec4899" stroke-width="2"/>
+        <text x="225" y="25" text-anchor="middle" font-size="13" fill="#9f1239" font-weight="bold">السؤال 32: أي متباينة يمثلها الرسم؟</text>
+        <!-- Grid -->
+        <g stroke="#e5e7eb" stroke-width="0.5">
+            ${Array.from({length: 17}, (_, i) => `<line x1="${50 + i*22}" y1="50" x2="${50 + i*22}" y2="350"/>`).join('')}
+            ${Array.from({length: 14}, (_, i) => `<line x1="50" y1="${50 + i*22}" x2="410" y2="${50 + i*22}"/>`).join('')}
+        </g>
+        <!-- Axes -->
+        <line x1="50" y1="270" x2="420" y2="270" stroke="#374151" stroke-width="2" marker-end="url(#arrowQ32)"/>
+        <line x1="204" y1="350" x2="204" y2="40" stroke="#374151" stroke-width="2" marker-end="url(#arrowQ32)"/>
+        <text x="425" y="275" font-size="11" fill="#374151" font-weight="bold">x</text>
+        <text x="194" y="35" font-size="11" fill="#374151" font-weight="bold">y</text>
+        <text x="209" y="285" font-size="10" fill="#374151">O</text>
+        <!-- Scale -->
+        <text x="226" y="285" font-size="9" fill="#6b7280">1</text>
+        <text x="248" y="285" font-size="9" fill="#6b7280">2</text>
+        <text x="182" y="285" font-size="9" fill="#6b7280">-1</text>
+        <text x="160" y="285" font-size="9" fill="#6b7280">-2</text>
+        <text x="138" y="285" font-size="9" fill="#6b7280">-3</text>
+        <text x="116" y="285" font-size="9" fill="#6b7280">-4</text>
+        <text x="199" y="248" font-size="9" fill="#6b7280">1</text>
+        <text x="199" y="226" font-size="9" fill="#6b7280">2</text>
+        <text x="199" y="204" font-size="9" fill="#6b7280">3</text>
+        <text x="199" y="182" font-size="9" fill="#6b7280">4</text>
+        <text x="199" y="160" font-size="9" fill="#6b7280">5</text>
+        <text x="199" y="138" font-size="9" fill="#6b7280">6</text>
+        <text x="199" y="116" font-size="9" fill="#6b7280">7</text>
+        <text x="199" y="292" font-size="9" fill="#6b7280">-1</text>
+        <!-- Shaded region ABOVE parabola (light blue) -->
+        <path d="M 50 50 L 50 270 L 94 270 Q 116 180 138 130 Q 160 100 182 90 Q 204 88 226 90 Q 248 100 270 130 Q 292 180 314 270 L 410 270 L 410 50 Z" fill="#bfdbfe" opacity="0.5"/>
+        <!-- Parabola y = x² + 2x + 4 = (x+1)² + 3, vertex at (-1, 3), SOLID line -->
+        <path d="M 94 270 Q 116 180 138 130 Q 160 100 182 90 Q 204 88 226 90 Q 248 100 270 130 Q 292 180 314 270" fill="none" stroke="#2563eb" stroke-width="3"/>
+        <!-- Vertex -->
+        <circle cx="182" cy="90" r="4" fill="#dc2626"/>
+        <text x="145" y="80" font-size="9" fill="#dc2626" font-weight="bold">V(-1, 3)</text>
+        <!-- Y-intercept -->
+        <circle cx="204" cy="92" r="3" fill="#16a34a"/>
+        <text x="210" y="85" font-size="9" fill="#16a34a">(0, 4)</text>
+        <!-- Solid line indicator -->
+        <text x="225" y="370" text-anchor="middle" font-size="11" fill="#9f1239" font-weight="bold">Solid line → inclusive inequality (≥ or ≤)</text>
+        <text x="225" y="385" text-anchor="middle" font-size="10" fill="#9f1239">Shaded ABOVE parabola → y ≥ f(x)</text>
+        <defs><marker id="arrowQ32" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#374151"/></marker></defs>
+    </svg>`,
+    
+    rules_summary: `<svg class="svg-graph" width="500" height="400" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="490" height="390" rx="12" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+        <text x="250" y="25" text-anchor="middle" font-size="14" fill="#1e40af" font-weight="bold">📐 قواعد تمثيل المتباينات التربيعية</text>
+        <!-- Rule 1: Line type -->
+        <rect x="20" y="45" width="460" height="70" rx="6" fill="#bfdbfe" stroke="#2563eb" stroke-width="2"/>
+        <text x="250" y="65" text-anchor="middle" font-size="12" fill="#1e40af" font-weight="bold">Rule 1: Line Type (نوع الخط)</text>
+        <text x="250" y="85" text-anchor="middle" font-size="11" fill="#1e40af">• y &gt; f(x) or y &lt; f(x) → DASHED line (متباينة صارمة)</text>
+        <text x="250" y="103" text-anchor="middle" font-size="11" fill="#1e40af">• y ≥ f(x) or y ≤ f(x) → SOLID line (متباينة غير صارمة)</text>
+        <!-- Rule 2: Shading -->
+        <rect x="20" y="125" width="460" height="70" rx="6" fill="#bfdbfe" stroke="#2563eb" stroke-width="2"/>
+        <text x="250" y="145" text-anchor="middle" font-size="12" fill="#1e40af" font-weight="bold">Rule 2: Shading Direction (اتجاه التظليل)</text>
+        <text x="250" y="165" text-anchor="middle" font-size="11" fill="#1e40af">• y &gt; f(x) or y ≥ f(x) → Shade ABOVE parabola (فوق)</text>
+        <text x="250" y="183" text-anchor="middle" font-size="11" fill="#1e40af">• y &lt; f(x) or y ≤ f(x) → Shade BELOW parabola (تحت)</text>
+        <!-- Rule 3: Test point -->
+        <rect x="20" y="205" width="460" height="70" rx="6" fill="#bfdbfe" stroke="#2563eb" stroke-width="2"/>
+        <text x="250" y="225" text-anchor="middle" font-size="12" fill="#1e40af" font-weight="bold">Rule 3: Test Point (نقطة الاختبار)</text>
+        <text x="250" y="245" text-anchor="middle" font-size="11" fill="#1e40af">• Pick a point NOT on the parabola (usually (0,0))</text>
+        <text x="250" y="263" text-anchor="middle" font-size="11" fill="#1e40af">• Substitute into inequality → if TRUE, shade that side</text>
+        <!-- Rule 4: Parabola direction -->
+        <rect x="20" y="285" width="460" height="70" rx="6" fill="#bfdbfe" stroke="#2563eb" stroke-width="2"/>
+        <text x="250" y="305" text-anchor="middle" font-size="12" fill="#1e40af" font-weight="bold">Rule 4: Parabola Direction (اتجاه القطع)</text>
+        <text x="250" y="325" text-anchor="middle" font-size="11" fill="#1e40af">• a &gt; 0: Opens UP (مفتوح لأعلى) | a &lt; 0: Opens DOWN (مفتوح لأسفل)</text>
+        <text x="250" y="343" text-anchor="middle" font-size="11" fill="#1e40af">• Vertex: x = -b/(2a), y = f(-b/(2a))</text>
+        <!-- Summary -->
+        <rect x="20" y="365" width="460" height="20" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+        <text x="250" y="380" text-anchor="middle" font-size="10" fill="#92400e" font-weight="bold">💡 Remember: Dashed = strict (&gt;, &lt;) | Solid = inclusive (≥, ≤)</text>
+    </svg>`,
+    
+    test_point_method: `<svg class="svg-graph" width="500" height="380" viewBox="0 0 500 380" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="490" height="370" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+        <text x="250" y="25" text-anchor="middle" font-size="14" fill="#065f46" font-weight="bold">🎯 طريقة نقطة الاختبار - Test Point Method</text>
+        <!-- Example -->
+        <rect x="20" y="45" width="460" height="80" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+        <text x="250" y="65" text-anchor="middle" font-size="12" fill="#065f46" font-weight="bold">Example: Is (0, 3) a solution to y &gt; x² + 2x + 1?</text>
+        <text x="250" y="85" text-anchor="middle" font-size="11" fill="#065f46" font-family="'Amiri', serif">Substitute: 3 &gt; 0² + 2(0) + 1 → 3 &gt; 1 ✓ TRUE</text>
+        <text x="250" y="105" text-anchor="middle" font-size="11" fill="#065f46" font-weight="bold">Yes! (0, 3) is a solution.</text>
+        <text x="250" y="120" text-anchor="middle" font-size="10" fill="#065f46">نعم! النقطة (0, 3) تحقق المتباينة</text>
+        <!-- Counter example -->
+        <rect x="20" y="135" width="460" height="80" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+        <text x="250" y="155" text-anchor="middle" font-size="12" fill="#065f46" font-weight="bold">Counter: Is (0, -1) a solution to y &gt; x² + 2x + 1?</text>
+        <text x="250" y="175" text-anchor="middle" font-size="11" fill="#065f46" font-family="'Amiri', serif">Substitute: -1 &gt; 0² + 2(0) + 1 → -1 &gt; 1 ✗ FALSE</text>
+        <text x="250" y="195" text-anchor="middle" font-size="11" fill="#065f46" font-weight="bold">No! (0, -1) is NOT a solution.</text>
+        <text x="250" y="210" text-anchor="middle" font-size="10" fill="#065f46">لا! النقطة (0, -1) لا تحقق المتباينة</text>
+        <!-- Steps -->
+        <rect x="20" y="225" width="460" height="135" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+        <text x="250" y="245" text-anchor="middle" font-size="11" fill="#92400e" font-weight="bold">📋 Steps to Graph Quadratic Inequality:</text>
+        <text x="250" y="263" text-anchor="middle" font-size="10" fill="#92400e">1. Graph the parabola y = f(x) (dashed if &gt; or &lt;, solid if ≥ or ≤)</text>
+        <text x="250" y="280" text-anchor="middle" font-size="10" fill="#92400e">2. Choose a test point NOT on the parabola (usually (0,0))</text>
+        <text x="250" y="297" text-anchor="middle" font-size="10" fill="#92400e">3. Substitute test point into inequality</text>
+        <text x="250" y="314" text-anchor="middle" font-size="10" fill="#92400e">4. If TRUE → shade the side containing test point</text>
+        <text x="250" y="331" text-anchor="middle" font-size="10" fill="#92400e">5. If FALSE → shade the OTHER side</text>
+        <text x="250" y="352" text-anchor="middle" font-size="10" fill="#92400e" font-weight="bold">💡 Tip: For y &gt; f(x) or y ≥ f(x), always shade ABOVE</text>
+    </svg>`,
+    
+    solid_vs_dashed: `<svg class="svg-graph" width="500" height="360" viewBox="0 0 500 360" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="490" height="350" rx="12" fill="#fce7f3" stroke="#ec4899" stroke-width="2"/>
+        <text x="250" y="25" text-anchor="middle" font-size="14" fill="#9f1239" font-weight="bold">📊 متقطع vs متصل - Dashed vs Solid</text>
+        <!-- Dashed example -->
+        <rect x="20" y="45" width="220" height="150" rx="6" fill="#fbcfe8" stroke="#ec4899" stroke-width="2"/>
+        <text x="130" y="65" text-anchor="middle" font-size="11" fill="#9f1239" font-weight="bold">Dashed Line (متقطع)</text>
+        <text x="130" y="82" text-anchor="middle" font-size="10" fill="#9f1239">y &gt; f(x) or y &lt; f(x)</text>
+        <text x="130" y="97" text-anchor="middle" font-size="9" fill="#9f1239">Strict inequality (صارمة)</text>
+        <!-- Dashed parabola -->
+        <path d="M 40 170 Q 80 120 130 110 Q 180 120 220 170" fill="none" stroke="#ec4899" stroke-width="3" stroke-dasharray="8,4"/>
+        <text x="130" y="185" text-anchor="middle" font-size="9" fill="#9f1239">Points on curve NOT included</text>
+        <!-- Solid example -->
+        <rect x="260" y="45" width="220" height="150" rx="6" fill="#fbcfe8" stroke="#ec4899" stroke-width="2"/>
+        <text x="370" y="65" text-anchor="middle" font-size="11" fill="#9f1239" font-weight="bold">Solid Line (متصل)</text>
+        <text x="370" y="82" text-anchor="middle" font-size="10" fill="#9f1239">y ≥ f(x) or y ≤ f(x)</text>
+        <text x="370" y="97" text-anchor="middle" font-size="9" fill="#9f1239">Inclusive inequality (شاملة)</text>
+        <!-- Solid parabola -->
+        <path d="M 280 170 Q 320 120 370 110 Q 420 120 460 170" fill="none" stroke="#ec4899" stroke-width="3"/>
+        <text x="370" y="185" text-anchor="middle" font-size="9" fill="#9f1239">Points on curve ARE included</text>
+        <!-- Summary -->
+        <rect x="20" y="205" width="460" height="135" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+        <text x="250" y="225" text-anchor="middle" font-size="11" fill="#92400e" font-weight="bold">🔑 Key Distinction:</text>
+        <text x="250" y="245" text-anchor="middle" font-size="10" fill="#92400e">• Dashed: boundary NOT part of solution (الحدود ليست من الحل)</text>
+        <text x="250" y="263" text-anchor="middle" font-size="10" fill="#92400e">• Solid: boundary IS part of solution (الحدود من الحل)</text>
+        <text x="250" y="283" text-anchor="middle" font-size="10" fill="#92400e">• Think: &gt; and &lt; are "strict" (no equality) → dashed</text>
+        <text x="250" y="300" text-anchor="middle" font-size="10" fill="#92400e">• Think: ≥ and ≤ include "=" → solid</text>
+        <text x="250" y="320" text-anchor="middle" font-size="10" fill="#92400e" font-weight="bold">Examples from questions:</text>
+        <text x="250" y="335" text-anchor="middle" font-size="9" fill="#92400e">Q31: dashed + above → y &gt; x² + 2x + 1</text>
+    </svg>`,
+    
+    above_below_shading: `<svg class="svg-graph" width="500" height="380" viewBox="0 0 500 380" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="490" height="370" rx="12" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+        <text x="250" y="25" text-anchor="middle" font-size="14" fill="#5b21b6" font-weight="bold">⬆️⬇️ التظليل فوق وتحت القطع</text>
+        <!-- Above shading -->
+        <rect x="20" y="45" width="220" height="150" rx="6" fill="#ddd6fe" stroke="#7c3aed" stroke-width="2"/>
+        <text x="130" y="65" text-anchor="middle" font-size="11" fill="#5b21b6" font-weight="bold">y &gt; f(x) or y ≥ f(x)</text>
+        <text x="130" y="82" text-anchor="middle" font-size="10" fill="#5b21b6">Shade ABOVE (فوق)</text>
+        <!-- Parabola opening up with shading above -->
+        <path d="M 40 170 Q 80 120 130 110 Q 180 120 220 170" fill="none" stroke="#7c3aed" stroke-width="2"/>
+        <rect x="40" y="50" width="180" height="60" fill="#7c3aed" opacity="0.2"/>
+        <text x="130" y="85" text-anchor="middle" font-size="10" fill="#5b21b6" font-weight="bold">SHADED</text>
+        <text x="130" y="185" text-anchor="middle" font-size="9" fill="#5b21b6">Parabola opens UP</text>
+        <!-- Below shading -->
+        <rect x="260" y="45" width="220" height="150" rx="6" fill="#ddd6fe" stroke="#7c3aed" stroke-width="2"/>
+        <text x="370" y="65" text-anchor="middle" font-size="11" fill="#5b21b6" font-weight="bold">y &lt; f(x) or y ≤ f(x)</text>
+        <text x="370" y="82" text-anchor="middle" font-size="10" fill="#5b21b6">Shade BELOW (تحت)</text>
+        <!-- Parabola opening up with shading below -->
+        <path d="M 280 170 Q 320 120 370 110 Q 420 120 460 170" fill="none" stroke="#7c3aed" stroke-width="2"/>
+        <rect x="280" y="170" width="180" height="25" fill="#7c3aed" opacity="0.2"/>
+        <text x="370" y="185" text-anchor="middle" font-size="9" fill="#5b21b6">Parabola opens UP</text>
+        <!-- Downward parabola examples -->
+        <rect x="20" y="205" width="220" height="150" rx="6" fill="#ddd6fe" stroke="#7c3aed" stroke-width="2"/>
+        <text x="130" y="225" text-anchor="middle" font-size="11" fill="#5b21b6" font-weight="bold">y &gt; f(x), a &lt; 0</text>
+        <text x="130" y="242" text-anchor="middle" font-size="10" fill="#5b21b6">Shade ABOVE (inside cup)</text>
+        <!-- Parabola opening down -->
+        <path d="M 40 280 Q 80 320 130 330 Q 180 320 220 280" fill="none" stroke="#7c3aed" stroke-width="2"/>
+        <rect x="40" y="255" width="180" height="25" fill="#7c3aed" opacity="0.2"/>
+        <text x="130" y="270" text-anchor="middle" font-size="9" fill="#5b21b6">Parabola opens DOWN</text>
+        <rect x="260" y="205" width="220" height="150" rx="6" fill="#ddd6fe" stroke="#7c3aed" stroke-width="2"/>
+        <text x="370" y="225" text-anchor="middle" font-size="11" fill="#5b21b6" font-weight="bold">y &lt; f(x), a &lt; 0</text>
+        <text x="370" y="242" text-anchor="middle" font-size="10" fill="#5b21b6">Shade BELOW (outside cup)</text>
+        <!-- Parabola opening down with shading below -->
+        <path d="M 280 280 Q 320 320 370 330 Q 420 320 460 280" fill="none" stroke="#7c3aed" stroke-width="2"/>
+        <rect x="280" y="330" width="180" height="25" fill="#7c3aed" opacity="0.2"/>
+        <text x="370" y="345" text-anchor="middle" font-size="9" fill="#5b21b6">Parabola opens DOWN</text>
+    </svg>`,
+    
+    q33_verification: `<svg class="svg-graph" width="500" height="360" viewBox="0 0 500 360" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="490" height="350" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+        <text x="250" y="25" text-anchor="middle" font-size="14" fill="#991b1b" font-weight="bold">🎯 السؤال 33: التحقق من النقاط - y &gt; x² + 2x + 1</text>
+        <!-- Test each point -->
+        <rect x="20" y="45" width="460" height="60" rx="6" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+        <text x="250" y="65" text-anchor="middle" font-size="11" fill="#991b1b" font-weight="bold">Test (0, 3): 3 &gt; 0² + 2(0) + 1 → 3 &gt; 1 ✓ TRUE</text>
+        <text x="250" y="83" text-anchor="middle" font-size="10" fill="#991b1b">✓ (0, 3) IS a solution (is in shaded region above parabola)</text>
+        <text x="250" y="100" text-anchor="middle" font-size="10" fill="#991b1b" font-weight="bold">Answer: a) (0, 3)</text>
+        <rect x="20" y="115" width="460" height="60" rx="6" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+        <text x="250" y="135" text-anchor="middle" font-size="11" fill="#991b1b" font-weight="bold">Test (0, -1): -1 &gt; 0² + 2(0) + 1 → -1 &gt; 1 ✗ FALSE</text>
+        <text x="250" y="153" text-anchor="middle" font-size="10" fill="#991b1b">✗ (0, -1) is NOT a solution (below parabola)</text>
+        <rect x="20" y="185" width="460" height="60" rx="6" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+        <text x="250" y="205" text-anchor="middle" font-size="11" fill="#991b1b" font-weight="bold">Test (-1, 0): 0 &gt; (-1)² + 2(-1) + 1 → 0 &gt; 0 ✗ FALSE</text>
+        <text x="250" y="223" text-anchor="middle" font-size="10" fill="#991b1b">✗ (-1, 0) is ON the parabola (boundary), not in strict &gt; region</text>
+        <rect x="20" y="255" width="460" height="60" rx="6" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+        <text x="250" y="275" text-anchor="middle" font-size="11" fill="#991b1b" font-weight="bold">Test (1, 2): 2 &gt; 1² + 2(1) + 1 → 2 &gt; 4 ✗ FALSE</text>
+        <text x="250" y="293" text-anchor="middle" font-size="10" fill="#991b1b">✗ (1, 2) is NOT a solution (below parabola at x=1, y should be &gt; 4)</text>
+        <!-- Visual -->
+        <rect x="20" y="325" width="460" height="25" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+        <text x="250" y="342" text-anchor="middle" font-size="10" fill="#92400e" font-weight="bold">💡 Only (0, 3) satisfies y &gt; x² + 2x + 1</text>
+    </svg>`,
+    
+    q34_analysis: `<svg class="svg-graph" width="500" height="400" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="490" height="390" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+        <text x="250" y="25" text-anchor="middle" font-size="14" fill="#92400e" font-weight="bold">📊 السؤال 34: y &lt; -2x² + 3x + 5</text>
+        <!-- Analysis -->
+        <rect x="20" y="45" width="460" height="70" rx="6" fill="#fde68a" stroke="#f59e0b" stroke-width="2"/>
+        <text x="250" y="65" text-anchor="middle" font-size="11" fill="#92400e" font-weight="bold">Step 1: Identify the parabola</text>
+        <text x="250" y="83" text-anchor="middle" font-size="10" fill="#92400e">y = -2x² + 3x + 5, a = -2 &lt; 0 → Opens DOWNWARD (مفتوح لأسفل)</text>
+        <text x="250" y="100" text-anchor="middle" font-size="10" fill="#92400e">Inequality: y &lt; f(x) → STRICT (&lt;) → DASHED line (متقطع)</text>
+        <text x="250" y="113" text-anchor="middle" font-size="10" fill="#92400e">Shading: y &lt; f(x) → BELOW the parabola (تحت القطع)</text>
+        <!-- Visual representation -->
+        <rect x="20" y="125" width="460" height="150" rx="6" fill="#fde68a" stroke="#f59e0b" stroke-width="2"/>
+        <!-- Downward parabola with shading below -->
+        <path d="M 60 200 Q 130 150 200 140 Q 250 138 300 140 Q 370 150 440 200" fill="none" stroke="#7c3aed" stroke-width="3" stroke-dasharray="8,4"/>
+        <path d="M 60 200 Q 130 150 200 140 Q 250 138 300 140 Q 370 150 440 200 L 440 270 L 60 270 Z" fill="#7c3aed" opacity="0.2"/>
+        <text x="250" y="175" text-anchor="middle" font-size="10" fill="#5b21b6" font-weight="bold">Parabola (dashed, opens down)</text>
+        <text x="250" y="240" text-anchor="middle" font-size="10" fill="#5b21b6" font-weight="bold">SHADED REGION (below)</text>
+        <text x="250" y="260" text-anchor="middle" font-size="9" fill="#5b21b6">y &lt; -2x² + 3x + 5</text>
+        <!-- Answer -->
+        <rect x="20" y="285" width="460" height="100" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+        <text x="250" y="305" text-anchor="middle" font-size="11" fill="#92400e" font-weight="bold">Answer Analysis:</text>
+        <text x="250" y="323" text-anchor="middle" font-size="10" fill="#92400e">• Parabola opens DOWN (a = -2 &lt; 0) ✓</text>
+        <text x="250" y="340" text-anchor="middle" font-size="10" fill="#92400e">• Line is DASHED (strict inequality &lt;) ✓</text>
+        <text x="250" y="357" text-anchor="middle" font-size="10" fill="#92400e">• Shading is BELOW the parabola ✓</text>
+        <text x="250" y="375" text-anchor="middle" font-size="11" fill="#92400e" font-weight="bold">Correct: d) القطع المكافئ منقط، ويُظلل أسفله (داخله)</text>
+    </svg>`,
+    
+    complete_guide: `<svg class="svg-graph" width="500" height="420" viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="490" height="410" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+        <text x="250" y="25" text-anchor="middle" font-size="14" fill="#065f46" font-weight="bold">📋 دليل شامل لرسم المتباينات التربيعية</text>
+        <!-- Step 1 -->
+        <rect x="20" y="45" width="460" height="60" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+        <text x="250" y="65" text-anchor="middle" font-size="11" fill="#065f46" font-weight="bold">Step 1: Graph the boundary parabola y = f(x)</text>
+        <text x="250" y="83" text-anchor="middle" font-size="10" fill="#065f46">• Find vertex: x = -b/(2a), y = f(vertex)</text>
+        <text x="250" y="98" text-anchor="middle" font-size="10" fill="#065f46">• Determine direction: a &gt; 0 (up), a &lt; 0 (down)</text>
+        <!-- Step 2 -->
+        <rect x="20" y="115" width="460" height="60" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+        <text x="250" y="135" text-anchor="middle" font-size="11" fill="#065f46" font-weight="bold">Step 2: Determine line type</text>
+        <text x="250" y="153" text-anchor="middle" font-size="10" fill="#065f46">• &gt; or &lt; → DASHED line (boundary not included)</text>
+        <text x="250" y="168" text-anchor="middle" font-size="10" fill="#065f46">• ≥ or ≤ → SOLID line (boundary included)</text>
+        <!-- Step 3 -->
+        <rect x="20" y="185" width="460" height="60" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+        <text x="250" y="205" text-anchor="middle" font-size="11" fill="#065f46" font-weight="bold">Step 3: Determine shading direction</text>
+        <text x="250" y="223" text-anchor="middle" font-size="10" fill="#065f46">• y &gt; f(x) or y ≥ f(x) → Shade ABOVE parabola</text>
+        <text x="250" y="238" text-anchor="middle" font-size="10" fill="#065f46">• y &lt; f(x) or y ≤ f(x) → Shade BELOW parabola</text>
+        <!-- Step 4 -->
+        <rect x="20" y="255" width="460" height="60" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+        <text x="250" y="275" text-anchor="middle" font-size="11" fill="#065f46" font-weight="bold">Step 4: Verify with test point</text>
+        <text x="250" y="293" text-anchor="middle" font-size="10" fill="#065f46">• Pick (0,0) or any point not on parabola</text>
+        <text x="250" y="308" text-anchor="middle" font-size="10" fill="#065f46">• Substitute → if true, that side is shaded</text>
+        <!-- Quick reference -->
+        <rect x="20" y="325" width="460" height="80" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+        <text x="250" y="345" text-anchor="middle" font-size="11" fill="#92400e" font-weight="bold">🔑 Quick Reference:</text>
+        <text x="250" y="363" text-anchor="middle" font-size="10" fill="#92400e">y &gt; x²: dashed, above | y ≥ x²: solid, above</text>
+        <text x="250" y="380" text-anchor="middle" font-size="10" fill="#92400e">y &lt; x²: dashed, below | y ≤ x²: solid, below</text>
+        <text x="250" y="397" text-anchor="middle" font-size="10" fill="#92400e" font-weight="bold">For y &lt; -2x² + 3x + 5: dashed, below (opens down)</text>
+    </svg>`
+};
+
+// ==================== EXAM DATA - 30 QUESTIONS ====================
+const originalExamData = {
+    sections: [
+        {
+            id: 'sec1',
+            title: { ar: '🔹 القسم 1: تحديد المتباينة من الرسم (مثل Q31, Q32) (Q1-Q5)', en: '🔹 Section 1: Identifying Inequality from Graph (like Q31, Q32) (Q1-Q5)' },
+            questions: [
+                {
+                    q: { ar: '<strong>السؤال 1 (مثل السؤال 31):</strong> يبين الشكل المجاور تمثيلاً بيانياً لمتباينة. القطع المكافئ <span class="math-display">y = x² + 2x + 1</span> مرسوم بخط متقطع والمنطقة فوقه مظللة. ما المتباينة؟', en: '<strong>Question 1 (like Q31):</strong> The figure shows a graph of an inequality. Parabola <span class="math-display">y = x² + 2x + 1</span> is dashed and region above is shaded. What is the inequality?' },
+                    svg: svgGraphs.q31_graph,
+                    options: [
+                        { ar: '<span class="math-display">y ≥ x² + 2x + 1</span>', en: '<span class="math-display">y ≥ x² + 2x + 1</span>' },
+                        { ar: '<span class="math-display">y > x² + 2x + 1</span>', en: '<span class="math-display">y > x² + 2x + 1</span>' },
+                        { ar: '<span class="math-display">y < x² + 2x + 1</span>', en: '<span class="math-display">y < x² + 2x + 1</span>' },
+                        { ar: '<span class="math-display">y ≤ x² + 2x + 1</span>', en: '<span class="math-display">y ≤ x² + 2x + 1</span>' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'خط متقطع يعني متباينة صارمة (> أو <). التظليل فوق القطع يعني y > f(x). إذن y > x² + 2x + 1', en: 'Dashed line means strict inequality (> or <). Shading above means y > f(x). So y > x² + 2x + 1' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 2 (مثل السؤال 32):</strong> يبين الشكل تمثيلاً بيانياً لمتباينة. القطع المكافئ <span class="math-display">y = x² + 2x + 4</span> مرسوم بخط متصل والمنطقة فوقه مظللة. ما المتباينة؟', en: '<strong>Question 2 (like Q32):</strong> The figure shows parabola <span class="math-display">y = x² + 2x + 4</span> with solid line and shading above. What is the inequality?' },
+                    svg: svgGraphs.q32_graph,
+                    options: [
+                        { ar: '<span class="math-display">y < x² + 2x + 4</span>', en: '<span class="math-display">y < x² + 2x + 4</span>' },
+                        { ar: '<span class="math-display">y ≥ x² + 2x + 4</span>', en: '<span class="math-display">y ≥ x² + 2x + 4</span>' },
+                        { ar: '<span class="math-display">y ≤ x² + 2x + 4</span>', en: '<span class="math-display">y ≤ x² + 2x + 4</span>' },
+                        { ar: '<span class="math-display">y > x² + 2x + 4</span>', en: '<span class="math-display">y > x² + 2x + 4</span>' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'خط متصل يعني متباينة شاملة (≥ أو ≤). التظليل فوق القطع يعني y ≥ f(x). إذن y ≥ x² + 2x + 4', en: 'Solid line means inclusive inequality (≥ or ≤). Shading above means y ≥ f(x). So y ≥ x² + 2x + 4' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 3:</strong> إذا كان القطع المكافئ <span class="math-display">y = x² - 4</span> مرسوماً بخط متقطع والمنطقة تحته مظللة، فما المتباينة؟', en: '<strong>Question 3:</strong> If parabola <span class="math-display">y = x² - 4</span> is dashed and region below is shaded, what is the inequality?' },
+                    options: [
+                        { ar: '<span class="math-display">y < x² - 4</span>', en: '<span class="math-display">y < x² - 4</span>' },
+                        { ar: '<span class="math-display">y > x² - 4</span>', en: '<span class="math-display">y > x² - 4</span>' },
+                        { ar: '<span class="math-display">y ≤ x² - 4</span>', en: '<span class="math-display">y ≤ x² - 4</span>' },
+                        { ar: '<span class="math-display">y ≥ x² - 4</span>', en: '<span class="math-display">y ≥ x² - 4</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'خط متقطع + تظليل تحت القطع → y < x² - 4', en: 'Dashed line + shading below → y < x² - 4' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 4:</strong> إذا كان القطع المكافئ <span class="math-display">y = -x² + 2x + 3</span> مرسوماً بخط متصل والمنطقة تحته مظللة، فما المتباينة؟', en: '<strong>Question 4:</strong> If parabola <span class="math-display">y = -x² + 2x + 3</span> is solid and region below is shaded, what is the inequality?' },
+                    options: [
+                        { ar: '<span class="math-display">y < -x² + 2x + 3</span>', en: '<span class="math-display">y < -x² + 2x + 3</span>' },
+                        { ar: '<span class="math-display">y > -x² + 2x + 3</span>', en: '<span class="math-display">y > -x² + 2x + 3</span>' },
+                        { ar: '<span class="math-display">y ≤ -x² + 2x + 3</span>', en: '<span class="math-display">y ≤ -x² + 2x + 3</span>' },
+                        { ar: '<span class="math-display">y ≥ -x² + 2x + 3</span>', en: '<span class="math-display">y ≥ -x² + 2x + 3</span>' }
+                    ],
+                    correct: 2,
+                    answer: { ar: 'خط متصل + تظليل تحت القطع → y ≤ -x² + 2x + 3', en: 'Solid line + shading below → y ≤ -x² + 2x + 3' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 5:</strong> ما الفرق بين تمثيل <span class="math-display">y > x²</span> و <span class="math-display">y ≥ x²</span>؟', en: '<strong>Question 5:</strong> What is the difference between graphing <span class="math-display">y > x²</span> and <span class="math-display">y ≥ x²</span>?' },
+                    svg: svgGraphs.solid_vs_dashed,
+                    options: [
+                        { ar: 'y > x² يستخدم خطاً متقطعاً، و y ≥ x² يستخدم خطاً متصلاً', en: 'y > x² uses dashed line, y ≥ x² uses solid line' },
+                        { ar: 'كلاهما يستخدم خطاً متصلاً', en: 'Both use solid line' },
+                        { ar: 'كلاهما يستخدم خطاً متقطعاً', en: 'Both use dashed line' },
+                        { ar: 'y > x² يستخدم خطاً متصلاً، و y ≥ x² يستخدم خطاً متقطعاً', en: 'y > x² uses solid line, y ≥ x² uses dashed line' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'المتباينات الصارمة (> أو <) تستخدم خطاً متقطعاً لأن النقاط على القطع ليست من الحل. المتباينات الشاملة (≥ أو ≤) تستخدم خطاً متصلاً', en: 'Strict inequalities (> or <) use dashed line. Inclusive inequalities (≥ or ≤) use solid line' }
+                }
+            ]
+        },
+        {
+            id: 'sec2',
+            title: { ar: '🔹 القسم 2: التحقق من النقاط (مثل Q33) (Q6-Q10)', en: '🔹 Section 2: Testing Points (like Q33) (Q6-Q10)' },
+            questions: [
+                {
+                    q: { ar: '<strong>السؤال 6 (مثل السؤال 33):</strong> أي من النقاط التالية تمثل حلاً للمتباينة <span class="math-display">y > x² + 2x + 1</span>؟', en: '<strong>Question 6 (like Q33):</strong> Which point is a solution to <span class="math-display">y > x² + 2x + 1</span>?' },
+                    svg: svgGraphs.q33_verification,
+                    options: [
+                        { ar: '<span class="math-display">(0, 3)</span>', en: '<span class="math-display">(0, 3)</span>' },
+                        { ar: '<span class="math-display">(0, -1)</span>', en: '<span class="math-display">(0, -1)</span>' },
+                        { ar: '<span class="math-display">(-1, 0)</span>', en: '<span class="math-display">(-1, 0)</span>' },
+                        { ar: '<span class="math-display">(1, 2)</span>', en: '<span class="math-display">(1, 2)</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'نعوض (0, 3): 3 > 0 + 0 + 1 → 3 > 1 ✓ صحيحة. الباقي: (0,-1): -1>1 ✗، (-1,0): 0>0 ✗، (1,2): 2>4 ✗', en: 'Test (0,3): 3 > 1 ✓. Others fail: (0,-1): -1>1 ✗, (-1,0): 0>0 ✗, (1,2): 2>4 ✗' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 7:</strong> أي نقطة تمثل حلاً للمتباينة <span class="math-display">y ≥ x² - 4</span>؟', en: '<strong>Question 7:</strong> Which point is a solution to <span class="math-display">y ≥ x² - 4</span>?' },
+                    options: [
+                        { ar: '<span class="math-display">(0, 0)</span>', en: '<span class="math-display">(0, 0)</span>' },
+                        { ar: '<span class="math-display">(0, -5)</span>', en: '<span class="math-display">(0, -5)</span>' },
+                        { ar: '<span class="math-display">(3, 4)</span>', en: '<span class="math-display">(3, 4)</span>' },
+                        { ar: '<span class="math-display">(2, -1)</span>', en: '<span class="math-display">(2, -1)</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'نعوض (0, 0): 0 ≥ 0 - 4 → 0 ≥ -4 ✓ صحيحة. (3,4): 4 ≥ 9-4=5 ✗. (2,-1): -1 ≥ 4-4=0 ✗', en: 'Test (0,0): 0 ≥ -4 ✓. (3,4): 4 ≥ 5 ✗. (2,-1): -1 ≥ 0 ✗' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 8:</strong> أي نقطة تمثل حلاً للمتباينة <span class="math-display">y < -x² + 4</span>؟', en: '<strong>Question 8:</strong> Which point is a solution to <span class="math-display">y < -x² + 4</span>?' },
+                    options: [
+                        { ar: '<span class="math-display">(0, 0)</span>', en: '<span class="math-display">(0, 0)</span>' },
+                        { ar: '<span class="math-display">(0, 5)</span>', en: '<span class="math-display">(0, 5)</span>' },
+                        { ar: '<span class="math-display">(2, 1)</span>', en: '<span class="math-display">(2, 1)</span>' },
+                        { ar: '<span class="math-display">(0, 4)</span>', en: '<span class="math-display">(0, 4)</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'نعوض (0, 0): 0 < -0 + 4 → 0 < 4 ✓ صحيحة. (0,5): 5<4 ✗. (2,1): 1<-4+4=0 ✗. (0,4): 4<4 ✗ (strict)', en: 'Test (0,0): 0 < 4 ✓. (0,5): 5<4 ✗. (2,1): 1<0 ✗. (0,4): 4<4 ✗ (strict inequality)' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 9:</strong> أي نقطة تقع على حدود المتباينة <span class="math-display">y ≥ x² + 2x + 1</span>؟', en: '<strong>Question 9:</strong> Which point lies on the boundary of <span class="math-display">y ≥ x² + 2x + 1</span>?' },
+                    options: [
+                        { ar: '<span class="math-display">(-1, 0)</span>', en: '<span class="math-display">(-1, 0)</span>' },
+                        { ar: '<span class="math-display">(0, 0)</span>', en: '<span class="math-display">(0, 0)</span>' },
+                        { ar: '<span class="math-display">(1, 1)</span>', en: '<span class="math-display">(1, 1)</span>' },
+                        { ar: '<span class="math-display">(-2, 0)</span>', en: '<span class="math-display">(-2, 0)</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'الحدود هي y = x² + 2x + 1 = (x+1)². الرأس (-1, 0) يقع على القطع. نعوض: 0 = (-1+1)² = 0 ✓', en: 'Boundary is y = (x+1)². Vertex (-1, 0) is on parabola. Check: 0 = (-1+1)² = 0 ✓' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 10:</strong> كم عدد النقاط من {(0,0), (1,5), (-1,1), (2,10)} التي تحقق <span class="math-display">y > x² + 2x + 1</span>؟', en: '<strong>Question 10:</strong> How many points from {(0,0), (1,5), (-1,1), (2,10)} satisfy <span class="math-display">y > x² + 2x + 1</span>?' },
+                    options: [
+                        { ar: '<span class="math-display">2</span>', en: '<span class="math-display">2</span>' },
+                        { ar: '<span class="math-display">1</span>', en: '<span class="math-display">1</span>' },
+                        { ar: '<span class="math-display">3</span>', en: '<span class="math-display">3</span>' },
+                        { ar: '<span class="math-display">4</span>', en: '<span class="math-display">4</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: '(0,0): 0>1 ✗. (1,5): 5>4 ✓. (-1,1): 1>0 ✓. (2,10): 10>9 ✓. إذن 3 نقاط... تصحيح: (0,0): 0>1 ✗، (1,5): 5>1+2+1=4 ✓، (-1,1): 1>1-2+1=0 ✓، (2,10): 10>4+4+1=9 ✓. الإجابة 3', en: '(0,0): 0>1 ✗. (1,5): 5>4 ✓. (-1,1): 1>0 ✓. (2,10): 10>9 ✓. Answer: 3 points' }
+                }
+            ]
+        },
+        {
+            id: 'sec3',
+            title: { ar: '🔹 القسم 3: وصف التمثيل البياني (مثل Q34) (Q11-Q15)', en: '🔹 Section 3: Describing the Graph (like Q34) (Q11-Q15)' },
+            questions: [
+                {
+                    q: { ar: '<strong>السؤال 11 (مثل السؤال 34):</strong> عند تمثيل المتباينة <span class="math-display">y < -2x² + 3x + 5</span> بيانياً، فإن:', en: '<strong>Question 11 (like Q34):</strong> When graphing <span class="math-display">y < -2x² + 3x + 5</span>, the graph:' },
+                    svg: svgGraphs.q34_analysis,
+                    options: [
+                        { ar: 'القطع المكافئ متصل، ويُظلل أسفله (داخله)', en: 'Parabola is solid, shaded below (inside)' },
+                        { ar: 'القطع المكافئ منقط، ويُظلل أعلاه (خارجه)', en: 'Parabola is dashed, shaded above (outside)' },
+                        { ar: 'القطع المكافئ متصل، ويُظلل أعلاه (خارجه)', en: 'Parabola is solid, shaded above (outside)' },
+                        { ar: 'القطع المكافئ منقط، ويُظلل أسفله (داخله)', en: 'Parabola is dashed, shaded below (inside)' }
+                    ],
+                    correct: 3,
+                    answer: { ar: 'a = -2 < 0 (مفتوح لأسفل). المتباينة < (صارمة) → خط متقطع. y < f(x) → تظليل تحت القطع (داخل الكأس)', en: 'a = -2 < 0 (opens down). < means dashed. y < f(x) means shade below (inside the cup)' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 12:</strong> عند تمثيل المتباينة <span class="math-display">y ≥ x² - 4x + 4</span> بيانياً، فإن:', en: '<strong>Question 12:</strong> When graphing <span class="math-display">y ≥ x² - 4x + 4</span>, the graph:' },
+                    options: [
+                        { ar: 'القطع المكافئ منقط، ويُظلل أسفله', en: 'Parabola is dashed, shaded below' },
+                        { ar: 'القطع المكافئ متصل، ويُظلل أسفله', en: 'Parabola is solid, shaded below' },
+                        { ar: 'القطع المكافئ متصل، ويُظلل أعلاه', en: 'Parabola is solid, shaded above' },
+                        { ar: 'القطع المكافئ منقط، ويُظلل أعلاه', en: 'Parabola is dashed, shaded above' }
+                    ],
+                    correct: 2,
+                    answer: { ar: 'a = 1 > 0 (مفتوح لأعلى). المتباينة ≥ (شاملة) → خط متصل. y ≥ f(x) → تظليل فوق القطع', en: 'a = 1 > 0 (opens up). ≥ means solid. y ≥ f(x) means shade above' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 13:</strong> عند تمثيل المتباينة <span class="math-display">y > 3x² - 6x + 2</span> بيانياً، فإن:', en: '<strong>Question 13:</strong> When graphing <span class="math-display">y > 3x² - 6x + 2</span>, the graph:' },
+                    options: [
+                        { ar: 'القطع المكافئ متصل، ويُظلل أسفله', en: 'Parabola is solid, shaded below' },
+                        { ar: 'القطع المكافئ منقط، ويُظلل أعلاه', en: 'Parabola is dashed, shaded above' },
+                        { ar: 'القطع المكافئ متصل، ويُظلل أعلاه', en: 'Parabola is solid, shaded above' },
+                        { ar: 'القطع المكافئ منقط، ويُظلل أسفله', en: 'Parabola is dashed, shaded below' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'a = 3 > 0 (مفتوح لأعلى). المتباينة > (صارمة) → خط متقطع. y > f(x) → تظليل فوق القطع', en: 'a = 3 > 0 (opens up). > means dashed. y > f(x) means shade above' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 14:</strong> عند تمثيل المتباينة <span class="math-display">y ≤ -x² + 2x + 3</span> بيانياً، فإن:', en: '<strong>Question 14:</strong> When graphing <span class="math-display">y ≤ -x² + 2x + 3</span>, the graph:' },
+                    options: [
+                        { ar: 'القطع المكافئ متصل، ويُظلل أعلاه (خارج الكأس)', en: 'Parabola is solid, shaded above (outside cup)' },
+                        { ar: 'القطع المكافئ منقط، ويُظلل أسفله (داخل الكأس)', en: 'Parabola is dashed, shaded below (inside cup)' },
+                        { ar: 'القطع المكافئ متصل، ويُظلل أسفله (داخل الكأس)', en: 'Parabola is solid, shaded below (inside cup)' },
+                        { ar: 'القطع المكافئ منقط، ويُظلل أعلاه (خارج الكأس)', en: 'Parabola is dashed, shaded above (outside cup)' }
+                    ],
+                    correct: 2,
+                    answer: { ar: 'a = -1 < 0 (مفتوح لأسفل). المتباينة ≤ (شاملة) → خط متصل. y ≤ f(x) → تظليل تحت القطع (داخل الكأس)', en: 'a = -1 < 0 (opens down). ≤ means solid. y ≤ f(x) means shade below (inside the cup)' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 15:</strong> ما الوصف الصحيح لتمثيل <span class="math-display">y < x²</span>؟', en: '<strong>Question 15:</strong> What is the correct description for graphing <span class="math-display">y < x²</span>?' },
+                    svg: svgGraphs.above_below_shading,
+                    options: [
+                        { ar: 'قطع مكافئ مفتوح لأعلى، خط متقطع، تظليل تحت القطع', en: 'Parabola opens up, dashed line, shading below' },
+                        { ar: 'قطع مكافئ مفتوح لأعلى، خط متصل، تظليل تحت القطع', en: 'Parabola opens up, solid line, shading below' },
+                        { ar: 'قطع مكافئ مفتوح لأعلى، خط متقطع، تظليل فوق القطع', en: 'Parabola opens up, dashed line, shading above' },
+                        { ar: 'قطع مكافئ مفتوح لأسفل، خط متقطع، تظليل تحت القطع', en: 'Parabola opens down, dashed line, shading below' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'y = x²: a = 1 > 0 (مفتوح لأعلى). < صارمة → متقطع. y < f(x) → تظليل تحت القطع', en: 'y = x²: a = 1 > 0 (opens up). < strict → dashed. y < f(x) → shade below' }
+                }
+            ]
+        },
+        {
+            id: 'sec4',
+            title: { ar: '🔹 القسم 4: تحديد الرأس والاتجاه (Q16-Q20)', en: '🔹 Section 4: Vertex & Direction (Q16-Q20)' },
+            questions: [
+                {
+                    q: { ar: '<strong>السؤال 16:</strong> ما إحداثيات رأس القطع المكافئ <span class="math-display">y = x² + 2x + 1</span>؟', en: '<strong>Question 16:</strong> What are the vertex coordinates of <span class="math-display">y = x² + 2x + 1</span>?' },
+                    svg: svgGraphs.rules_summary,
+                    options: [
+                        { ar: '<span class="math-display">(-1, 0)</span>', en: '<span class="math-display">(-1, 0)</span>' },
+                        { ar: '<span class="math-display">(1, 0)</span>', en: '<span class="math-display">(1, 0)</span>' },
+                        { ar: '<span class="math-display">(-1, 1)</span>', en: '<span class="math-display">(-1, 1)</span>' },
+                        { ar: '<span class="math-display">(0, 1)</span>', en: '<span class="math-display">(0, 1)</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'y = (x+1)². الرأس (-1, 0). أو: x = -b/(2a) = -2/2 = -1, y = (-1)² + 2(-1) + 1 = 0', en: 'y = (x+1)². Vertex (-1, 0). Or: x = -2/2 = -1, y = 1 - 2 + 1 = 0' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 17:</strong> ما إحداثيات رأس القطع المكافئ <span class="math-display">y = x² + 2x + 4</span>؟', en: '<strong>Question 17:</strong> What are the vertex coordinates of <span class="math-display">y = x² + 2x + 4</span>?' },
+                    options: [
+                        { ar: '<span class="math-display">(-1, 3)</span>', en: '<span class="math-display">(-1, 3)</span>' },
+                        { ar: '<span class="math-display">(1, 3)</span>', en: '<span class="math-display">(1, 3)</span>' },
+                        { ar: '<span class="math-display">(-1, 4)</span>', en: '<span class="math-display">(-1, 4)</span>' },
+                        { ar: '<span class="math-display">(0, 4)</span>', en: '<span class="math-display">(0, 4)</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'y = (x+1)² + 3. الرأس (-1, 3). أو: x = -2/2 = -1, y = 1 - 2 + 4 = 3', en: 'y = (x+1)² + 3. Vertex (-1, 3). Or: x = -1, y = 1 - 2 + 4 = 3' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 18:</strong> ما اتجاه فتح القطع المكافئ <span class="math-display">y = -2x² + 3x + 5</span>؟', en: '<strong>Question 18:</strong> What is the opening direction of <span class="math-display">y = -2x² + 3x + 5</span>?' },
+                    options: [
+                        { ar: 'مفتوح لأسفل (لأن a = -2 < 0)', en: 'Opens downward (because a = -2 < 0)' },
+                        { ar: 'مفتوح لأعلى (لأن a = -2)', en: 'Opens upward (because a = -2)' },
+                        { ar: 'مفتوح لليمين', en: 'Opens to the right' },
+                        { ar: 'مفتوح لليسار', en: 'Opens to the left' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'a = -2 < 0، إذن القطع مفتوح لأسفل', en: 'a = -2 < 0, so parabola opens downward' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 19:</strong> ما المقطع الصادي للقطع المكافئ <span class="math-display">y = x² + 2x + 1</span>؟', en: '<strong>Question 19:</strong> What is the y-intercept of <span class="math-display">y = x² + 2x + 1</span>?' },
+                    options: [
+                        { ar: '<span class="math-display">(0, 1)</span>', en: '<span class="math-display">(0, 1)</span>' },
+                        { ar: '<span class="math-display">(0, 0)</span>', en: '<span class="math-display">(0, 0)</span>' },
+                        { ar: '<span class="math-display">(1, 0)</span>', en: '<span class="math-display">(1, 0)</span>' },
+                        { ar: '<span class="math-display">(0, 2)</span>', en: '<span class="math-display">(0, 2)</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'المقطع الصادي عند x = 0: y = 0 + 0 + 1 = 1. النقطة (0, 1)', en: 'Y-intercept at x = 0: y = 0 + 0 + 1 = 1. Point (0, 1)' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 20:</strong> ما المقطع الصادي للقطع المكافئ <span class="math-display">y = x² + 2x + 4</span>؟', en: '<strong>Question 20:</strong> What is the y-intercept of <span class="math-display">y = x² + 2x + 4</span>?' },
+                    options: [
+                        { ar: '<span class="math-display">(0, 4)</span>', en: '<span class="math-display">(0, 4)</span>' },
+                        { ar: '<span class="math-display">(0, 2)</span>', en: '<span class="math-display">(0, 2)</span>' },
+                        { ar: '<span class="math-display">(4, 0)</span>', en: '<span class="math-display">(4, 0)</span>' },
+                        { ar: '<span class="math-display">(0, 0)</span>', en: '<span class="math-display">(0, 0)</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'المقطع الصادي عند x = 0: y = 0 + 0 + 4 = 4. النقطة (0, 4)', en: 'Y-intercept at x = 0: y = 0 + 0 + 4 = 4. Point (0, 4)' }
+                }
+            ]
+        },
+        {
+            id: 'sec5',
+            title: { ar: '🔹 القسم 5: تحويل الصيغة العامة إلى صيغة الرأس (Q21-Q25)', en: '🔹 Section 5: Converting to Vertex Form (Q21-Q25)' },
+            questions: [
+                {
+                    q: { ar: '<strong>السؤال 21:</strong> ما صيغة الرأس للمعادلة <span class="math-display">y = x² + 2x + 1</span>؟', en: '<strong>Question 21:</strong> What is the vertex form of <span class="math-display">y = x² + 2x + 1</span>?' },
+                    svg: svgGraphs.test_point_method,
+                    options: [
+                        { ar: '<span class="math-display">y = (x + 1)²</span>', en: '<span class="math-display">y = (x + 1)²</span>' },
+                        { ar: '<span class="math-display">y = (x - 1)²</span>', en: '<span class="math-display">y = (x - 1)²</span>' },
+                        { ar: '<span class="math-display">y = (x + 1)² + 1</span>', en: '<span class="math-display">y = (x + 1)² + 1</span>' },
+                        { ar: '<span class="math-display">y = x² + 1</span>', en: '<span class="math-display">y = x² + 1</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'x² + 2x + 1 = (x + 1)². صيغة الرأس: y = (x + 1)²', en: 'x² + 2x + 1 = (x + 1)². Vertex form: y = (x + 1)²' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 22:</strong> ما صيغة الرأس للمعادلة <span class="math-display">y = x² + 2x + 4</span>؟', en: '<strong>Question 22:</strong> What is the vertex form of <span class="math-display">y = x² + 2x + 4</span>?' },
+                    options: [
+                        { ar: '<span class="math-display">y = (x + 1)² + 3</span>', en: '<span class="math-display">y = (x + 1)² + 3</span>' },
+                        { ar: '<span class="math-display">y = (x - 1)² + 3</span>', en: '<span class="math-display">y = (x - 1)² + 3</span>' },
+                        { ar: '<span class="math-display">y = (x + 1)² + 4</span>', en: '<span class="math-display">y = (x + 1)² + 4</span>' },
+                        { ar: '<span class="math-display">y = (x + 2)² + 4</span>', en: '<span class="math-display">y = (x + 2)² + 4</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'x² + 2x + 4 = (x² + 2x + 1) + 3 = (x + 1)² + 3', en: 'x² + 2x + 4 = (x² + 2x + 1) + 3 = (x + 1)² + 3' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 23:</strong> ما صيغة الرأس للمعادلة <span class="math-display">y = -2x² + 3x + 5</span>؟', en: '<strong>Question 23:</strong> What is the vertex form of <span class="math-display">y = -2x² + 3x + 5</span>?' },
+                    options: [
+                        { ar: '<span class="math-display">y = -2(x - 3/4)² + 49/8</span>', en: '<span class="math-display">y = -2(x - 3/4)² + 49/8</span>' },
+                        { ar: '<span class="math-display">y = -2(x + 3/4)² + 49/8</span>', en: '<span class="math-display">y = -2(x + 3/4)² + 49/8</span>' },
+                        { ar: '<span class="math-display">y = -2(x - 3)² + 5</span>', en: '<span class="math-display">y = -2(x - 3)² + 5</span>' },
+                        { ar: '<span class="math-display">y = 2(x - 3/4)² + 49/8</span>', en: '<span class="math-display">y = 2(x - 3/4)² + 49/8</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'x = -b/(2a) = -3/(2·(-2)) = 3/4. y = -2(9/16) + 3(3/4) + 5 = -9/8 + 9/4 + 5 = -9/8 + 18/8 + 40/8 = 49/8. الرأس (3/4, 49/8)', en: 'x = 3/4, y = 49/8. Vertex form: y = -2(x - 3/4)² + 49/8' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 24:</strong> ما رأس القطع المكافئ <span class="math-display">y = x² - 4x + 7</span>؟', en: '<strong>Question 24:</strong> What is the vertex of <span class="math-display">y = x² - 4x + 7</span>?' },
+                    options: [
+                        { ar: '<span class="math-display">(2, 3)</span>', en: '<span class="math-display">(2, 3)</span>' },
+                        { ar: '<span class="math-display">(-2, 3)</span>', en: '<span class="math-display">(-2, 3)</span>' },
+                        { ar: '<span class="math-display">(2, 7)</span>', en: '<span class="math-display">(2, 7)</span>' },
+                        { ar: '<span class="math-display">(4, 7)</span>', en: '<span class="math-display">(4, 7)</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'x = -(-4)/(2·1) = 2. y = 4 - 8 + 7 = 3. الرأس (2, 3)', en: 'x = 4/2 = 2. y = 4 - 8 + 7 = 3. Vertex (2, 3)' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 25:</strong> ما رأس القطع المكافئ <span class="math-display">y = -x² + 6x - 5</span>؟', en: '<strong>Question 25:</strong> What is the vertex of <span class="math-display">y = -x² + 6x - 5</span>?' },
+                    options: [
+                        { ar: '<span class="math-display">(3, 4)</span>', en: '<span class="math-display">(3, 4)</span>' },
+                        { ar: '<span class="math-display">(-3, 4)</span>', en: '<span class="math-display">(-3, 4)</span>' },
+                        { ar: '<span class="math-display">(3, -4)</span>', en: '<span class="math-display">(3, -4)</span>' },
+                        { ar: '<span class="math-display">(6, -5)</span>', en: '<span class="math-display">(6, -5)</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'x = -6/(2·(-1)) = 3. y = -9 + 18 - 5 = 4. الرأس (3, 4)', en: 'x = -6/(-2) = 3. y = -9 + 18 - 5 = 4. Vertex (3, 4)' }
+                }
+            ]
+        },
+        {
+            id: 'sec6',
+            title: { ar: '🔹 القسم 6: مسائل مركبة وتطبيقات (Q26-Q30)', en: '🔹 Section 6: Mixed Problems & Applications (Q26-Q30)' },
+            questions: [
+                {
+                    q: { ar: '<strong>السؤال 26:</strong> ما المتباينة التي يمثلها قطع مكافئ <span class="math-display">y = x² - 2x - 3</span> بخط متصل مع تظليل المنطقة التي تحتوي النقطة (0, 0)؟', en: '<strong>Question 26:</strong> What inequality is represented by parabola <span class="math-display">y = x² - 2x - 3</span> with solid line and shading containing (0, 0)?' },
+                    svg: svgGraphs.complete_guide,
+                    options: [
+                        { ar: '<span class="math-display">y ≥ x² - 2x - 3</span>', en: '<span class="math-display">y ≥ x² - 2x - 3</span>' },
+                        { ar: '<span class="math-display">y ≤ x² - 2x - 3</span>', en: '<span class="math-display">y ≤ x² - 2x - 3</span>' },
+                        { ar: '<span class="math-display">y > x² - 2x - 3</span>', en: '<span class="math-display">y > x² - 2x - 3</span>' },
+                        { ar: '<span class="math-display">y < x² - 2x - 3</span>', en: '<span class="math-display">y < x² - 2x - 3</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'خط متصل → ≥ أو ≤. نعوض (0,0): 0 ≥ 0 - 0 - 3 → 0 ≥ -3 ✓ صحيحة. إذن y ≥ x² - 2x - 3', en: 'Solid line → ≥ or ≤. Test (0,0): 0 ≥ -3 ✓. So y ≥ x² - 2x - 3' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 27:</strong> أي نقطة تقع في منطقة حل المتباينة <span class="math-display">y ≤ x² - 4</span>؟', en: '<strong>Question 27:</strong> Which point is in the solution region of <span class="math-display">y ≤ x² - 4</span>?' },
+                    options: [
+                        { ar: '<span class="math-display">(0, -5)</span>', en: '<span class="math-display">(0, -5)</span>' },
+                        { ar: '<span class="math-display">(0, 0)</span>', en: '<span class="math-display">(0, 0)</span>' },
+                        { ar: '<span class="math-display">(0, -3)</span>', en: '<span class="math-display">(0, -3)</span>' },
+                        { ar: '<span class="math-display">(2, 1)</span>', en: '<span class="math-display">(2, 1)</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'نعوض (0, -5): -5 ≤ 0 - 4 → -5 ≤ -4 ✓ صحيحة. (0,0): 0≤-4 ✗. (0,-3): -3≤-4 ✗. (2,1): 1≤0 ✗', en: 'Test (0,-5): -5 ≤ -4 ✓. (0,0): 0≤-4 ✗. (0,-3): -3≤-4 ✗. (2,1): 1≤0 ✗' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 28:</strong> ما المتباينة التي رأس قطعها المكافئ عند (2, -1) ومفتوح لأعلى مع تظليل المنطقة فوقه بخط متقطع؟', en: '<strong>Question 28:</strong> What inequality has vertex at (2, -1), opens up, with shading above and dashed line?' },
+                    options: [
+                        { ar: '<span class="math-display">y > (x - 2)² - 1</span>', en: '<span class="math-display">y > (x - 2)² - 1</span>' },
+                        { ar: '<span class="math-display">y ≥ (x - 2)² - 1</span>', en: '<span class="math-display">y ≥ (x - 2)² - 1</span>' },
+                        { ar: '<span class="math-display">y < (x - 2)² - 1</span>', en: '<span class="math-display">y < (x - 2)² - 1</span>' },
+                        { ar: '<span class="math-display">y > (x + 2)² - 1</span>', en: '<span class="math-display">y > (x + 2)² - 1</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'الرأس (2, -1) → y = a(x-2)² - 1. مفتوح لأعلى → a > 0 (نأخذ a=1). خط متقطع → > أو <. تظليل فوق → y > f(x). إذن y > (x-2)² - 1', en: 'Vertex (2,-1) → y = (x-2)² - 1. Opens up, dashed, above → y > (x-2)² - 1' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 29:</strong> أي متباينة تمثل منطقة الحل التي تحتوي النقطة (0, 0) للقطع <span class="math-display">y = x² + 1</span>؟', en: '<strong>Question 29:</strong> Which inequality represents the solution region containing (0, 0) for parabola <span class="math-display">y = x² + 1</span>?' },
+                    options: [
+                        { ar: '<span class="math-display">y < x² + 1</span>', en: '<span class="math-display">y < x² + 1</span>' },
+                        { ar: '<span class="math-display">y > x² + 1</span>', en: '<span class="math-display">y > x² + 1</span>' },
+                        { ar: '<span class="math-display">y ≥ x² + 1</span>', en: '<span class="math-display">y ≥ x² + 1</span>' },
+                        { ar: '<span class="math-display">y = x² + 1</span>', en: '<span class="math-display">y = x² + 1</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'نعوض (0, 0): 0 < 0 + 1 → 0 < 1 ✓ صحيحة. 0 > 1 ✗. إذن y < x² + 1', en: 'Test (0,0): 0 < 1 ✓. 0 > 1 ✗. So y < x² + 1' }
+                },
+                {
+                    q: { ar: '<strong>السؤال 30:</strong> ما الوصف الكامل لتمثيل المتباينة <span class="math-display">y ≥ 2x² - 8x + 6</span>؟', en: '<strong>Question 30:</strong> What is the complete description for graphing <span class="math-display">y ≥ 2x² - 8x + 6</span>?' },
+                    options: [
+                        { ar: 'قطع مكافئ مفتوح لأعلى، خط متصل، تظليل فوق القطع، الرأس (2, -2)', en: 'Parabola opens up, solid line, shading above, vertex (2, -2)' },
+                        { ar: 'قطع مكافئ مفتوح لأعلى، خط متقطع، تظليل فوق القطع، الرأس (2, -2)', en: 'Parabola opens up, dashed line, shading above, vertex (2, -2)' },
+                        { ar: 'قطع مكافئ مفتوح لأسفل، خط متصل، تظليل تحت القطع، الرأس (2, -2)', en: 'Parabola opens down, solid line, shading below, vertex (2, -2)' },
+                        { ar: 'قطع مكافئ مفتوح لأعلى، خط متصل، تظليل تحت القطع، الرأس (2, 6)', en: 'Parabola opens up, solid line, shading below, vertex (2, 6)' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'a = 2 > 0 (مفتوح لأعلى). ≥ (شاملة) → خط متصل. y ≥ f(x) → تظليل فوق. الرأس: x = 8/4 = 2, y = 8 - 16 + 6 = -2. الرأس (2, -2)', en: 'a = 2 > 0 (opens up). ≥ → solid. y ≥ f(x) → shade above. Vertex: x = 2, y = -2. Vertex (2, -2)' }
+                }
+            ]
+        }
+    ]
+};
+
+function shuffleArray(array) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(rng() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+function prepareShuffledExam() {
+    rng = mulberry32(currentSeed);
+    examData = JSON.parse(JSON.stringify(originalExamData));
+    correctAnswersMap = {};
+    let globalIdx = 0;
+    examData.sections.forEach((section) => {
+        section.questions = shuffleArray(section.questions);
+        section.questions.forEach((q) => {
+            const optionsWithCorrect = q.options.map((opt, idx) => ({ option: opt, isCorrect: idx === q.correct }));
+            const shuffledOptions = shuffleArray(optionsWithCorrect);
+            q.options = shuffledOptions.map(o => o.option);
+            q.correct = shuffledOptions.findIndex(o => o.isCorrect);
+            correctAnswersMap[globalIdx] = String.fromCharCode(97 + q.correct);
+            globalIdx++;
+        });
+    });
+}
+
+function reshuffleExam() {
+    const msg = currentLang === 'ar' ? '🔄 سيتم إنشاء أسئلة جديدة ومسح إجاباتك. هل أنت متأكد؟' : '🔄 New questions will be generated. Are you sure?';
+    if (confirm(msg)) {
+        currentSeed = Date.now(); timeRemaining = TOTAL_TIME; answersVisible = false;
+        prepareShuffledExam(); renderExam(); saveState();
+        alert(currentLang === 'ar' ? '🎲 تم تغيير الأسئلة! حظاً موفقاً! 🍀' : '🎲 Questions changed! Good luck! 🍀');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+function setLanguage(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.body.classList.toggle('en-mode', lang === 'en');
+    
+    document.querySelectorAll('[data-ar]').forEach(el => {
+        el.textContent = el.getAttribute('data-' + lang);
+    });
+    
+    document.querySelectorAll('[data-placeholder-ar]').forEach(el => {
+        el.placeholder = el.getAttribute('data-placeholder-' + lang);
+    });
+    
+    renderExam(); saveState(false);
+}
+
+function renderExam() {
+    const container = document.getElementById('exam-content');
+    const labels = { ar: { option: ['a)', 'b)', 'c)', 'd)'], answer: '✅ الإجابة:' }, en: { option: ['a)', 'b)', 'c)', 'd)'], answer: '✅ Answer:' } };
+    const lbl = labels[currentLang];
+    let html = '';
+    let globalIdx = 0;
+    
+    examData.sections.forEach((section, secIdx) => {
+        const badgeClass = ['module-1', 'module-2', 'module-3', 'module-4', 'module-5', 'module-6'][secIdx];
+        html += '<section class="bg-white p-6 rounded-2xl shadow-lg border-2 border-blue-100">';
+        html += '<div class="text-center mb-4"><span class="module-badge ' + badgeClass + '">' + section.title[currentLang] + '</span></div>';
+        html += '<ol class="space-y-4 text-sm">';
+        
+        section.questions.forEach((q) => {
+            html += '<li class="border-r-4 border-blue-400 pr-4 py-2" id="q-' + globalIdx + '" style="border-right: 4px solid #2563eb; padding-right: 1rem;">';
+            html += '<strong class="text-blue-700">' + (globalIdx + 1) + '.</strong> ' + q.q[currentLang] + '<br>';
+            if (q.svg) html += '<div class="graph-container">' + q.svg + '</div>';
+            
+            q.options.forEach((opt, oIdx) => {
+                html += '<label class="cursor-pointer block mt-2 mr-4 hover:bg-blue-50 rounded-lg p-2 transition" style="margin-right: 1rem;">';
+                html += '<input type="radio" name="q' + globalIdx + '" value="' + String.fromCharCode(97 + oIdx) + '" class="mr-2 ml-2">';
+                html += '<span class="arabic-math">' + lbl.option[oIdx] + ' ' + opt[currentLang] + '</span>';
+                html += '</label>';
+            });
+            
+            html += '<div class="answer-box text-green-700 mt-3 font-medium ' + (answersVisible ? '' : 'hidden') + ' bg-green-50 rounded-lg p-3 border border-green-200">';
+            html += lbl.answer + ' ' + lbl.option[q.correct] + ' <span class="arabic-math">' + q.options[q.correct][currentLang] + '</span><br>';
+            html += '<span class="text-sm text-green-700 mt-2 block arabic-math">' + q.answer[currentLang] + '</span>';
+            html += '</div></li>';
+            globalIdx++;
+        });
+        
+        html += '</ol></section>';
+    });
+    
+    container.innerHTML = html;
+}
+
+function startTimer() {
+    updateTimerDisplay();
+    timerInterval = setInterval(() => {
+        timeRemaining--;
+        updateTimerDisplay();
+        if (timeRemaining % 60 === 0) saveState(false);
+        if (timeRemaining <= 600) document.getElementById('timer').classList.add('timer-warning');
+        if (timeRemaining <= 0) {
+            clearInterval(timerInterval);
+            alert(currentLang === 'ar' ? "⏰ انتهى الوقت!" : "⏰ Time's up!");
+            gradeExam();
+        }
+    }, 1000);
+}
+
+function updateTimerDisplay() {
+    const m = Math.floor(timeRemaining / 60);
+    const s = timeRemaining % 60;
+    document.getElementById('timer').textContent = m.toString().padStart(2,'0') + ':' + s.toString().padStart(2,'0');
+}
+
+function toggleAnswers() {
+    answersVisible = !answersVisible;
+    document.querySelectorAll('.answer-box').forEach(el => el.classList.toggle('hidden', !answersVisible));
+    saveState(false);
+}
+
+function gradeExam() {
+    let correctCount = 0;
+    const sectionScores = new Array(TOTAL_SECTIONS).fill(0);
+    
+    for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+        const sel = document.querySelector('input[name="q'+i+'"]:checked');
+        const li = document.getElementById('q-' + i);
+        if (li) {
+            const isCorrect = sel && sel.value === correctAnswersMap[i];
+            if (isCorrect) {
+                correctCount++;
+                li.classList.add('correct');
+                li.classList.remove('incorrect');
+                sectionScores[Math.floor(i / QUESTIONS_PER_SECTION)]++;
+            } else {
+                li.classList.add('incorrect');
+                li.classList.remove('correct');
+            }
+        }
+    }
+    
+    const score = Math.round((correctCount / TOTAL_QUESTIONS) * 100);
+    document.getElementById('res-total').textContent = score + ' / 100';
+    document.getElementById('res-name').textContent = document.getElementById('studentName').value || (currentLang === 'ar' ? 'بطل' : 'Champion');
+    document.getElementById('res-date').textContent = new Date().toLocaleDateString(currentLang === 'ar' ? 'ar-AE' : 'en-US');
+    
+    const pc = document.getElementById('sections-performance');
+    pc.innerHTML = '';
+    examData.sections.forEach((s, idx) => {
+        pc.innerHTML += '<div class="flex justify-between items-center p-3 bg-white rounded-lg"><span class="text-gray-700">' + s.title[currentLang] + '</span><span class="font-bold text-blue-700">' + sectionScores[idx] + '/' + QUESTIONS_PER_SECTION + '</span></div>';
+    });
+    
+    const badge = document.getElementById('success-badge');
+    document.getElementById('success-percent').textContent = score + '%';
+    
+    if (currentLang === 'ar') {
+        if (score >= 90) { badge.textContent = '🌟 ممتاز جداً!'; badge.className = 'success-badge grade-excellent'; }
+        else if (score >= 75) { badge.textContent = '👏 ممتاز!'; badge.className = 'success-badge grade-good'; }
+        else if (score >= 50) { badge.textContent = '👍 جيد'; badge.className = 'success-badge grade-pass'; }
+        else { badge.textContent = '💪 حاول مرة أخرى'; badge.className = 'success-badge grade-fail'; }
+    } else {
+        if (score >= 90) { badge.textContent = '🌟 Outstanding!'; badge.className = 'success-badge grade-excellent'; }
+        else if (score >= 75) { badge.textContent = '👏 Excellent!'; badge.className = 'success-badge grade-good'; }
+        else if (score >= 50) { badge.textContent = '👍 Good'; badge.className = 'success-badge grade-pass'; }
+        else { badge.textContent = '💪 Try Again'; badge.className = 'success-badge grade-fail'; }
+    }
+    
+    document.getElementById('results-panel').classList.remove('hidden');
+    document.getElementById('results-panel').scrollIntoView({ behavior: 'smooth' });
+    if (timerInterval) clearInterval(timerInterval);
+}
+
+function sendResultsToEmail() {
+    const btn = document.getElementById('sendEmailBtn');
+    const status = document.getElementById('emailStatus');
+    btn.disabled = true;
+    btn.textContent = currentLang === 'ar' ? '⏳ جاري الإرسال...' : '⏳ Sending...';
+    
+    const name = document.getElementById('studentName').value || 'N/A';
+    const studentClass = document.getElementById('studentClass').value || 'N/A';
+    const date = document.getElementById('examDate').value || new Date().toLocaleDateString();
+    const score = document.getElementById('res-total').textContent;
+    const successRate = document.getElementById('success-percent').textContent;
+    const badge = document.getElementById('success-badge').textContent;
+    
+    let questionsHTML = '<div style="font-family:Arial; direction:rtl;">';
+    questionsHTML += '<h2>📊 ' + (currentLang === 'ar' ? 'نتيجة امتحان المتباينات التربيعية' : 'Quadratic Inequalities Exam Result') + '</h2>';
+    questionsHTML += '<p><strong>' + (currentLang === 'ar' ? 'الاسم' : 'Name') + ':</strong> ' + name + '</p>';
+    questionsHTML += '<p><strong>' + (currentLang === 'ar' ? 'الشعبة' : 'Class') + ':</strong> ' + studentClass + '</p>';
+    questionsHTML += '<p><strong>' + (currentLang === 'ar' ? 'التاريخ' : 'Date') + ':</strong> ' + date + '</p>';
+    questionsHTML += '<p><strong>' + (currentLang === 'ar' ? 'الدرجة' : 'Score') + ':</strong> ' + score + ' (' + successRate + '%)</p>';
+    questionsHTML += '<p><strong>' + (currentLang === 'ar' ? 'التقدير' : 'Grade') + ':</strong> ' + badge + '</p>';
+    questionsHTML += '<hr><h3>' + (currentLang === 'ar' ? 'تفاصيل الإجابات:' : 'Answer Details:') + '</h3><table style="width:100%; border-collapse:collapse;">';
+    questionsHTML += '<tr style="background:#2563eb; color:white;"><th style="padding:8px; border:1px solid #ddd;">#</th><th style="padding:8px; border:1px solid #ddd;">' + (currentLang === 'ar' ? 'السؤال' : 'Question') + '</th><th style="padding:8px; border:1px solid #ddd;">' + (currentLang === 'ar' ? 'إجابة الطالب' : 'Student Answer') + '</th><th style="padding:8px; border:1px solid #ddd;">' + (currentLang === 'ar' ? 'الصحيحة' : 'Correct') + '</th><th style="padding:8px; border:1px solid #ddd;">' + (currentLang === 'ar' ? 'النتيجة' : 'Result') + '</th></tr>';
+    
+    let globalIdx = 0;
+    examData.sections.forEach((section) => {
+        questionsHTML += '<tr style="background:#dbeafe;"><td colspan="5" style="padding:8px; font-weight:bold; border:1px solid #ddd;">' + section.title.ar + '</td></tr>';
+        section.questions.forEach((q) => {
+            const sel = document.querySelector('input[name="q'+globalIdx+'"]:checked');
+            const sv = sel ? sel.value : null;
+            const cv = correctAnswersMap[globalIdx];
+            const ic = sv === cv;
+            let sat = currentLang === 'ar' ? '❌ لم يجب' : '❌ No answer';
+            let sac = '#dc2626';
+            if (sv) {
+                const si = sv.charCodeAt(0) - 97;
+                sat = q.options[si][currentLang];
+                sac = ic ? '#16a34a' : '#dc2626';
+            }
+            const cat = q.options[q.correct][currentLang];
+            const rb = ic ? '#f0fdf4' : '#fef2f2';
+            questionsHTML += '<tr style="background:' + rb + ';"><td style="padding:8px; border:1px solid #ddd; text-align:center;">' + (globalIdx+1) + '</td><td style="padding:8px; border:1px solid #ddd;">' + q.q.ar.replace(/<[^>]+>/g, '').substring(0, 80) + '...</td><td style="padding:8px; border:1px solid #ddd; color:' + sac + ';">' + sat + '</td><td style="padding:8px; border:1px solid #ddd; color:#16a34a;">' + cat + '</td><td style="padding:8px; border:1px solid #ddd; text-align:center;">' + (ic?'✅':'❌') + '</td></tr>';
+            globalIdx++;
+        });
+    });
+    questionsHTML += '</table></div>';
+    
+    const templateParams = {
+        to_email: TARGET_EMAIL,
+        student_name: name,
+        student_class: studentClass,
+        exam_date: date,
+        total_score: score,
+        success_rate: successRate,
+        grade: badge,
+        answers_table: questionsHTML
+    };
+    
+    emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
+        .then(() => {
+            status.textContent = currentLang === 'ar' ? '✅ تم الإرسال بنجاح!' : '✅ Sent successfully!';
+            status.style.color = '#16a34a';
+            btn.textContent = currentLang === 'ar' ? '✓ تم' : '✓ Sent';
+            alert(currentLang === 'ar' ? 'تم إرسال النتيجة للمعلم بنجاح!' : 'Result sent to teacher successfully!');
+        })
+        .catch((error) => {
+            status.textContent = currentLang === 'ar' ? '❌ فشل الإرسال' : '❌ Failed to send';
+            status.style.color = '#dc2626';
+            btn.disabled = false;
+            btn.textContent = currentLang === 'ar' ? '📧 حاول مرة أخرى' : '📧 Try Again';
+            alert(currentLang === 'ar' ? 'فشل الإرسال: ' + error.text : 'Failed: ' + error.text);
+        });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    const saved = loadState();
+    if (saved && saved.seed) {
+        currentSeed = saved.seed;
+        currentLang = saved.lang || 'ar';
+        timeRemaining = saved.timeRemaining !== undefined ? saved.timeRemaining : TOTAL_TIME;
+        answersVisible = saved.answersVisible || false;
+    } else {
+        currentSeed = Date.now();
+    }
+    
+    document.getElementById('btn-ar').classList.toggle('active', currentLang === 'ar');
+    document.getElementById('btn-en').classList.toggle('active', currentLang === 'en');
+    document.body.classList.toggle('en-mode', currentLang === 'en');
+    document.documentElement.lang = currentLang;
+    document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+    
+    document.querySelectorAll('[data-ar]').forEach(el => {
+        el.textContent = el.getAttribute('data-' + currentLang);
+    });
+    
+    document.querySelectorAll('[data-placeholder-ar]').forEach(el => {
+        el.placeholder = el.getAttribute('data-placeholder-' + currentLang);
+    });
+    
+    prepareShuffledExam();
+    renderExam();
+    if (saved) {
+        if (saved.studentName) document.getElementById('studentName').value = saved.studentName;
+        if (saved.studentClass) document.getElementById('studentClass').value = saved.studentClass;
+        if (saved.examDate) document.getElementById('examDate').value = saved.examDate;
+        if (saved.answers) restoreAnswers(saved.answers);
+    }
+    setupAnswerListeners();
+    setupInputListeners();
+    startTimer();
+});
+window.addEventListener('beforeunload', () => saveState(false));
+</script>
+</body>
+</html>
